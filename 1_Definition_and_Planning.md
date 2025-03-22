@@ -71,8 +71,10 @@
 
 ## 5. Project Management and User Testing
 
-- **Development**: The project will be developed in an Agile environment, with iterations for features such as the difficulty levels, score calculation system, user authentication, and high scores functionality.
-- **User Testing**: The project will undergo testing phases for usability, including ensuring proper score calculation, game timing, score saving, and high scores retrieval. Testers will provide feedback on UI/UX, game difficulty, and speed.
+- **Development**: The project will be developed using a **step-by-step, incremental approach**, focusing on one feature or task at a time. Each step will be completed thoroughly before moving on to the next, ensuring steady progress with a clear goal in mind. This method will help maintain a manageable and peaceful development process, avoiding rushed decisions or overwhelming tasks. Features such as difficulty levels, score calculation, user authentication, and high scores functionality will be tackled individually, ensuring quality and focus for each.
+  
+- **User Testing**: After completing most of the game features, manual user testing will be conducted to evaluate the overall gameplay experience. Feedback will be gathered on UI/UX, game difficulty, and speed to refine the final product.
+
 
 ## Game Points System
 
