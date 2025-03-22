@@ -64,8 +64,6 @@
 - **Frontend**: React will be used for building the interactive UI, which will fetch data from the backend (such as high scores) and manage game logic.
 - **Backend**: Node.js/Express will handle user registration, login, game data (score saving), and API routes for interacting with the frontend.
 - **Database**: **SQLite** will be used to store user data and high scores, including game results (turns, time, final score).
-    - SQLite provides a simple, lightweight solution for managing scores and user data without requiring a complex database server setup.
-    - Tables will include `users` (for registration data) and `high_scores` (to store scores for each difficulty level).
 - **Authentication**: JWT (JSON Web Tokens) will be used for managing user sessions securely.
 - **High Scores**: High scores will be stored in the database for each difficulty level (8, 12, or 20 cards) and be retrievable for both guests and registered users.
 
