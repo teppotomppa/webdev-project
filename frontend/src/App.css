@@ -1,0 +1,187 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-top: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+p {
+  font-size: 1.5rem;
+  margin: 10px;
+}
+
+.game-container {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-gap: 15px;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  /* Default grid layout for 4 columns */
+  grid-template-columns: repeat(4, 120px);
+  grid-template-rows: repeat(4, 120px);
+  max-width: 80vw; /* Ensures grid doesn't stretch too wide */
+  margin: 20px;
+  position: relative;
+}
+
+.card {
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card.flipped {
+  background-color: rgb(46, 46, 46);
+  cursor: default;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+button {
+  background-color: #ff9800;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 18px 24px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 100px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+  margin: 10px;
+}
+
+button:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.wrong-effect {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(3px);
+  }
+}
+
+.win-message {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff4500;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-10%, -10%);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Falling balloons */
+@keyframes fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+.balloon {
+  position: absolute;
+  top: -10%;
+  font-size: 2.5rem;
+  animation: fall 3s ease-in-out infinite;
+}
+
+.instructions-box {
+  background-color: #ff9800; /* Yellow background to match buttons */
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px; /* Limit width for better readability */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.instructions-box h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+.instructions-list {
+  list-style-type: disc;
+  padding-left: 20px;
+  color: #000000;
+}
+
+.instructions-list li {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
