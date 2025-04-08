@@ -8,51 +8,102 @@ const app = express();
 app.use(express.json()); // This is important for parsing JSON in POST requests
 
 // Set up SQLite database connection
-const db = new sqlite3.Database("./users.db", (err) => {
+const db = new sqlite3.Database("./scores.db", (err) => {
   if (err) {
     console.error("Error opening database", err);
   } else {
     console.log("SQLite database connected.");
 
-    // Create the USERS table if it doesn't exist
-    db.run(
-      `CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL UNIQUE,
-        email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
-      )`,
-      (err) => {
-        if (err) {
-          console.error("Error creating table:", err);
-        } else {
-          console.log("Users table ensured.");
-        }
-      }
-    );
+    db.serialize(() => {
+      // Create table for Easy difficulty
+      db.run(
+        `CREATE TABLE IF NOT EXISTS scores_easy (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL,
+          moves INTEGER NOT NULL,
+          time INTEGER NOT NULL,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`
+      );
+
+      // Create table for Medium difficulty
+      db.run(
+        `CREATE TABLE IF NOT EXISTS scores_medium (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL,
+          moves INTEGER NOT NULL,
+          time INTEGER NOT NULL,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`
+      );
+
+      // Create table for Hard difficulty
+      db.run(
+        `CREATE TABLE IF NOT EXISTS scores_hard (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL,
+          moves INTEGER NOT NULL,
+          time INTEGER NOT NULL,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`
+      );
+
+      console.log("All difficulty tables ensured.");
+    });
   }
 });
 
-// Handle /register route (POST request) for user registration
-app.post("/register", (req, res) => {
-  const { username, email, password } = req.body;
+// Handle /submit-score route (POST request) for submitting scores
+app.post("/submit-score", (req, res) => {
+  const { username, moves, time, difficulty } = req.body;
 
-  if (!username || !email || !password) {
-    return res.status(400).json({ message: "All fields are required." });
+  if (!username || !moves || !time || !difficulty) {
+    return res
+      .status(400)
+      .json({ message: "Username, moves, time, and difficulty are required." });
   }
 
+  // Validate difficulty and determine the table name
+  const validDifficulties = ["easy", "medium", "hard"];
+  if (!validDifficulties.includes(difficulty.toLowerCase())) {
+    return res.status(400).json({ message: "Invalid difficulty level." });
+  }
+
+  const tableName = `scores_${difficulty.toLowerCase()}`;
+
+  // Insert the score into the appropriate table
   const stmt = db.prepare(
-    "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
+    `INSERT INTO ${tableName} (username, moves, time) VALUES (?, ?, ?)`
   );
-  stmt.run(username, email, password, function (err) {
+  stmt.run(username, moves, time, function (err) {
     if (err) {
-      return res
-        .status(500)
-        .json({ message: "Username or email already taken." });
+      console.error("Error inserting score:", err);
+      return res.status(500).json({ message: "Error saving score." });
     }
-    res.status(200).json({ message: "User registered successfully!" });
+    res.status(200).json({ message: "Score submitted successfully!" });
   });
   stmt.finalize();
+});
+
+// Handle /highscores route (GET request) for retrieving top scores
+app.get("/highscores", (req, res) => {
+  const { difficulty } = req.query;
+
+  if (!difficulty) {
+    return res.status(400).json({ message: "Difficulty is required." });
+  }
+
+  const tableName = `scores_${difficulty.toLowerCase()}`;
+  db.all(
+    `SELECT username, moves, time, timestamp FROM ${tableName} ORDER BY time ASC, moves ASC LIMIT 10`,
+    (err, rows) => {
+      if (err) {
+        console.error("Error retrieving highscores:", err);
+        return res.status(500).json({ message: "Error retrieving highscores." });
+      }
+      res.status(200).json(rows);
+    }
+  );
 });
 
 // Serve static files (frontend)

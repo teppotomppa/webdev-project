@@ -17,14 +17,17 @@ form {
 }
 
 h1 {
-  font-size: 2.5rem;
-  margin-top: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 p {
-  font-size: 1.5rem;
-  margin: 10px;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .game-container {
@@ -170,9 +173,10 @@ button:active {
   border-radius: 10px;
   margin-top: 20px;
   width: 100%;
-  max-width: 400px; /* Limit width for better readability */
+  max-width: 500px; /* Limit width for better readability */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
+  align-items: center;
 }
 
 .instructions-box h2 {
@@ -191,4 +195,60 @@ button:active {
 .instructions-list li {
   margin-bottom: 8px;
   font-size: 16px;
+}
+
+.highscores-container {
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 800px;
+  color: white;
+}
+
+.highscores-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.highscores-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.highscores-container th,
+.highscores-container td {
+  padding: 16px;
+  text-align: center;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.highscores-container th {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ff9800;
+}
+
+.highscores-container tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.game-stats {
+  display: flex;
+  justify-content: center; /* Center the items horizontally */
+  align-items: center; /* Align the items vertically */
+  gap: 20px; /* Add space between the items */
+  margin-bottom: 20px; /* Add some spacing below the stats */
+}
+
+.game-stats p {
+  font-size: 1.5rem; /* Adjust the font size */
+  margin: 0; /* Remove default margins */
+  color: #ff9800; /* Match the color with the theme */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
 }
