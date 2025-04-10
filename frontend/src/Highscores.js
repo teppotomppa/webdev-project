@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { buttonClickSound } from "./utils/audioUtils"; // Import the button click sound
 
 const Highscores = ({
   turns,
@@ -18,7 +19,9 @@ const Highscores = ({
   const fetchHighscores = async (selectedDifficulty) => {
     setLoading(true);
     try {
-      const response = await fetch(`/highscores?difficulty=${selectedDifficulty}`);
+      const response = await fetch(
+        `/highscores?difficulty=${selectedDifficulty}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch highscores");
       }
@@ -77,39 +80,89 @@ const Highscores = ({
       {!difficulty ? (
         <div>
           <h2>Select Difficulty</h2>
-          <button onClick={() => setDifficulty("easy")} className="menu-button">
+          <button
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              setDifficulty("easy");
+            }}
+            className="menu-RetroButton"
+          >
             Easy
           </button>
-          <button onClick={() => setDifficulty("medium")} className="menu-button">
+          <button
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              setDifficulty("medium");
+            }}
+            className="menu-RetroButton"
+          >
             Medium
           </button>
-          <button onClick={() => setDifficulty("hard")} className="menu-button">
+          <button
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              setDifficulty("hard");
+            }}
+            className="menu-RetroButton"
+          >
             Hard
           </button>
           <button
             style={{ marginTop: "25px" }}
-            onClick={handleBackToMainMenu}
-            className="menu-button"
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              handleBackToMainMenu();
+            }}
+            className="menu-RetroButton"
           >
-            Back to Main Menu
+            Main Menu
           </button>
         </div>
       ) : !viewOnly && !scoreSubmitted ? (
-        <div>
+        <div className="score-form">
           <h2>Submit Your Score</h2>
           <p>You completed the game in {turns} turns!</p>
-          <p>Time: {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")}</p>
+          <p>
+            Time: {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")}
+          </p>
           <input
             type="text"
             placeholder="Enter your username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <button onClick={submitScore}>Submit Score</button>
+          <button
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              submitScore();
+            }}
+            className="menu-RetroButton"
+          >
+            Submit Score
+          </button>
+          <button
+            style={{ marginTop: "10px" }}
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              handleBackToMainMenu();
+            }}
+            className="menu-RetroButton"
+          >
+            Back to Main Menu
+          </button>
         </div>
       ) : (
         <div>
-          <h2>Highscores - {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</h2>
+          <h2>
+            Highscores -{" "}
+            {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+          </h2>
           {loading ? (
             <p>Loading...</p>
           ) : highscores.length > 0 ? (
@@ -127,7 +180,10 @@ const Highscores = ({
                   <tr key={index}>
                     <td>{score.username}</td>
                     <td>{score.moves}</td>
-                    <td>{Math.floor(score.time / 60)}:{String(score.time % 60).padStart(2, "0")}</td>
+                    <td>
+                      {Math.floor(score.time / 60)}:
+                      {String(score.time % 60).padStart(2, "0")}
+                    </td>
                     <td>
                       {new Date(score.timestamp + "Z").toLocaleString("fi-FI", {
                         timeZone: "Europe/Helsinki",
@@ -142,17 +198,25 @@ const Highscores = ({
           )}
           <button
             style={{ marginTop: "25px" }}
-            onClick={() => setDifficulty(null)} // Reset difficulty to go back to difficulty selection
-            className="menu-button"
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              setDifficulty(null);
+            }}
+            className="menu-RetroButton"
           >
-            Difficulty Selection
+            Back to Difficulty Selection
           </button>
           <button
             style={{ marginTop: "10px" }}
-            onClick={handleBackToMainMenu}
-            className="menu-button"
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              handleBackToMainMenu();
+            }}
+            className="menu-RetroButton"
           >
-            Back to Main Menu
+            Main Menu
           </button>
         </div>
       )}

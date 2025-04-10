@@ -1,5 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Highscores from "./Highscores"; // Import the Highscores component
+import { generateCards } from "./utils/generateCards";
+import { handleCardClick } from "./utils/handleCardClick";
+import { generateBalloons } from "./utils/generateBalloons";
+import {
+  cardFlipSound,
+  victorySound,
+  backgroundMusic,
+  buttonClickSound,
+} from "./utils/audioUtils";
 import "./App.css";
 
 const difficultyLevels = {
@@ -8,50 +17,46 @@ const difficultyLevels = {
   hard: 18, // 36 cards (18 pairs),
 };
 
-const generateCards = (pairs) => {
-  const baseEmojis = [
-    "🍎",
-    "🍌",
-    "🍇",
-    "🍉",
-    "🍓",
-    "🍒",
-    "🥑",
-    "🍍",
-    "🥕",
-    "🍕",
-    "🍔",
-    "🍩",
-    "🌮",
-    "🍪",
-    "🥨",
-    "🥝",
-    "🍜",
-    "🍣",
-  ];
-  const selectedEmojis = baseEmojis.slice(0, pairs);
-  const cards = selectedEmojis.flatMap((emoji, index) => [
-    { id: index, name: emoji },
-    { id: index, name: emoji },
-  ]);
-  return cards.sort(() => Math.random() - 0.5);
-};
-
 export default function App() {
   const [cards, setCards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
   const [turns, setTurns] = useState(0);
+  const [pendingCards, setPendingCards] = useState([]);
   const [isWin, setIsWin] = useState(false);
   const [effectClass, setEffectClass] = useState("");
   const [balloons, setBalloons] = useState([]);
   const [difficulty, setDifficulty] = useState(null);
   const [gridStyle, setGridStyle] = useState({});
   const [showHighscores, setShowHighscores] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const timerRef = useRef(null);
 
   // Timer state
   const [time, setTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  const toggleMute = () => {
+    setIsMuted((prevMuted) => {
+      const newMuted = !prevMuted;
+      backgroundMusic.muted = newMuted;
+      if (!newMuted && backgroundMusic.paused) {
+        backgroundMusic.play().catch((error) => {
+          console.error("Failed to play background music:", error);
+        });
+      }
+      return newMuted;
+    });
+  };
+
+  const startGameWithMusic = (level) => {
+    setDifficulty(level);
+    if (backgroundMusic.paused) {
+      backgroundMusic.play().catch((error) => {
+        console.error("Failed to play background music:", error);
+      });
+    }
+  };
 
   const resetHighscoresState = () => {
     setTurns(0);
@@ -78,11 +83,29 @@ export default function App() {
     return () => clearInterval(timer); // Cleanup timer on unmount
   }, [isTimerRunning]);
 
+  useEffect(() => {
+    // Play the background music when the app loads
+    backgroundMusic.volume = 0.1; // Set the volume (optional)
+    backgroundMusic.play().catch((error) => {
+      console.error("Failed to play background music:", error);
+    });
+
+    return () => {
+      // Stop the music when the component unmounts
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
+    };
+  }, []);
+
   const handleGameWin = useCallback(() => {
     setIsWin(true);
     setIsTimerRunning(false); // Stop timer
     setEffectClass("win-effect");
     generateBalloons();
+
+    victorySound.currentTime = 0; // Reset the sound to the beginning
+    victorySound.play();
+
     setTimeout(() => setEffectClass(""), 2000);
   }, []);
 
@@ -99,11 +122,20 @@ export default function App() {
   }, [isWin]);
 
   useEffect(() => {
-    // Adjust grid style based on difficulty
     if (difficulty) {
-      const numCards = difficultyLevels[difficulty] * 2;
-      const columns = Math.floor(Math.sqrt(numCards)); // Automatically decide number of columns
-      const rows = Math.ceil(numCards / columns); // Calculate rows needed
+      let columns, rows;
+
+      if (difficulty === "easy") {
+        columns = 4;
+        rows = 3;
+      } else if (difficulty === "medium") {
+        columns = 6;
+        rows = 4;
+      } else if (difficulty === "hard") {
+        columns = 9;
+        rows = 4;
+      }
+
       setGridStyle({
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
         gridTemplateRows: `repeat(${rows}, 1fr)`,
@@ -111,39 +143,20 @@ export default function App() {
     }
   }, [difficulty]);
 
-  const generateBalloons = () => {
-    const balloonArray = Array.from({ length: 100 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100 + "vw",
-      delay: Math.random() * 3 + "s",
-    }));
-    setBalloons(balloonArray);
-  };
-
-  const handleCardClick = (index) => {
-    if (
-      flipped.length === 2 ||
-      flipped.includes(index) ||
-      matched.includes(index)
-    )
-      return;
-
-    const newFlipped = [...flipped, index];
-    setFlipped(newFlipped);
-
-    if (newFlipped.length === 2) {
-      setTurns(turns + 1);
-      const [first, second] = newFlipped;
-      if (cards[first].name === cards[second].name) {
-        setMatched([...matched, first, second]);
-        setEffectClass("match-effect");
-        setTimeout(() => setEffectClass(""), 500);
-      } else {
-        setEffectClass("wrong-effect");
-        setTimeout(() => setEffectClass(""), 500);
-      }
-      setTimeout(() => setFlipped([]), 750);
-    }
+  const onCardClick = (index) => {
+    handleCardClick({
+      index,
+      flipped,
+      matched,
+      cards,
+      setFlipped,
+      setMatched,
+      setTurns,
+      cardFlipSound,
+      pendingCards,
+      setPendingCards,
+      timerRef,
+    });
   };
 
   const startNewGame = (level) => {
@@ -154,6 +167,8 @@ export default function App() {
     setIsWin(false);
     setEffectClass("");
     setBalloons([]);
+    setTime(0); // Reset timer
+    setIsTimerRunning(true); // Stop timer
   };
 
   return (
@@ -162,21 +177,43 @@ export default function App() {
         <div className="menu">
           <h1>Memory Game</h1>
           <p>Select Difficulty</p>
-          <button onClick={() => setDifficulty("easy")} className="menu-button">
+          <button
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              startGameWithMusic("easy"); // Call the original function
+            }}
+            className="menu-RetroButton"
+          >
             Easy
           </button>
           <button
-            onClick={() => setDifficulty("medium")}
-            className="menu-button"
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              startGameWithMusic("medium"); // Call the original function
+            }}
+            className="menu-RetroButton"
           >
             Medium
           </button>
-          <button onClick={() => setDifficulty("hard")} className="menu-button">
+          <button
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              startGameWithMusic("hard"); // Call the original function
+            }}
+            className="menu-RetroButton"
+          >
             Hard
           </button>
           <button
-            onClick={() => setShowHighscores(true)}
-            className="menu-button"
+            onClick={() => {
+              buttonClickSound.currentTime = 0; // Reset the sound
+              buttonClickSound.play(); // Play the sound
+              setShowHighscores(true); // Show highscores
+            }}
+            className="menu-RetroButton"
           >
             Highscores
           </button>
@@ -193,7 +230,7 @@ export default function App() {
                 delay.
               </li>
               <li>Keep playing until all cards are matched!</li>
-              <li>The fewer turns you take, the better your score!</li>
+              <li>The faster you are, the better your score!</li>
             </ul>
           </div>
         </div>
@@ -214,16 +251,34 @@ export default function App() {
           <h1>Memory Game</h1>
           <div className="button-container">
             <button
-              onClick={() => setDifficulty(null)}
+              onClick={() => {
+                buttonClickSound.currentTime = 0; // Reset the sound
+                buttonClickSound.play(); // Play the sound
+                setDifficulty(null); // Go back to the main menu
+              }}
               className="new-game-button"
             >
               Main Menu
             </button>
             <button
-              onClick={() => startNewGame(difficulty)}
+              onClick={() => {
+                buttonClickSound.currentTime = 0; // Reset the sound
+                buttonClickSound.play(); // Play the sound
+                startNewGame(difficulty); // Start a new game
+              }}
               className="new-game-button"
             >
               New Game
+            </button>
+            <button
+              onClick={() => {
+                buttonClickSound.currentTime = 0; // Reset the sound
+                buttonClickSound.play(); // Play the sound
+                toggleMute(); // Toggle mute
+              }}
+              className="mute-button"
+            >
+              {isMuted ? "Unmute" : "Mute"}
             </button>
           </div>
           <div className="grid" style={gridStyle}>
@@ -235,26 +290,41 @@ export default function App() {
                     ? "flipped"
                     : ""
                 }`}
-                onClick={() => handleCardClick(index)}
+                onClick={() => onCardClick(index)}
               >
-                {flipped.includes(index) || matched.includes(index)
-                  ? card.name
-                  : "❓"}
+                {flipped.includes(index) || matched.includes(index) ? (
+                  <img
+                    src={card.name}
+                    alt={`Card ${index}`}
+                    className="card-image"
+                  />
+                ) : (
+                  "❓"
+                )}
               </div>
             ))}
           </div>
           <div className="game-stats">
             <p>Turns: {turns}</p>
-            <p>Time: {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")}</p>
+            <p>
+              Time: {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")}
+            </p>
           </div>
           {isWin && (
             <div>
               <p className="win-message">
-                Congratulations! You won the game in {turns} turns and {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")}!😎🎉
+                Congratulations! You won the game in {turns} turns and{" "}
+                {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")}
+                !😎🎉
               </p>
               <button
-                onClick={() => setShowHighscores(true)}
-                className="highscores-button"
+                style={{ marginTop: "-5px" }}
+                onClick={() => {
+                  buttonClickSound.currentTime = 0; // Reset the sound
+                  buttonClickSound.play(); // Play the sound
+                  setShowHighscores(true); // Show highscores
+                }}
+                className="highscores-RetroButton"
               >
                 Submit Score & View Highscores
               </button>
