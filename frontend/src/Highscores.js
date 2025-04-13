@@ -20,7 +20,7 @@ const Highscores = ({
     setLoading(true);
     try {
       const response = await fetch(
-        `/highscores?difficulty=${selectedDifficulty}`
+        `https://memorygame-apeva9cubhakb7ge.northeurope-01.azurewebsites.net/highscores?difficulty=${selectedDifficulty}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch highscores");
@@ -50,7 +50,7 @@ const Highscores = ({
     }
 
     try {
-      const response = await fetch("/submit-score", {
+      const response = await fetch("https://memorygame-apeva9cubhakb7ge.northeurope-01.azurewebsites.net/submit-score", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, moves: turns, time, difficulty }),
