@@ -130,6 +130,82 @@ Here is documented the basic structure and main functionalities of my project: M
    };
    ```
 
+2. **Highscore Submission**:
+
+   - This function sends the player's score to the backend for storage in the database.
+
+   ```javascript
+   // filepath: src/Highscores.js
+   const submitScore = async () => {
+     if (!username) {
+       alert("Please enter a username.");
+       return;
+     }
+
+     try {
+       const response = await fetch("/submit-score", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ username, moves: turns, time, difficulty }),
+       });
+
+       if (!response.ok) {
+         throw new Error("Failed to submit score");
+       }
+
+       setScoreSubmitted(true);
+     } catch (error) {
+       console.error("Error submitting score:", error);
+       alert("Error submitting score. Please try again.");
+     }
+   };
+   ```
+
+3. **Timer Functionality**:
+
+   - This logic tracks the game duration in real-time.
+
+   ```javascript
+   // filepath: src/App.js
+   useEffect(() => {
+     let timer;
+     if (isTimerRunning) {
+       timer = setInterval(() => {
+         setTime((prevTime) => prevTime + 1);
+       }, 1000);
+     }
+     return () => clearInterval(timer);
+   }, [isTimerRunning]);
+   ```
+
+4. **Card Generation**:
+
+   - This function generates a shuffled deck of cards based on the selected difficulty.
+
+   ```javascript
+   // filepath: src/utils/generateCards.js
+   export const generateCards = (pairs) => {
+     const baseImages = [
+       "/images/cards/image1.png",
+       "/images/cards/image2.png",
+       // Add more images as needed
+     ];
+
+     const selectedImages = baseImages.slice(0, pairs);
+     const cards = selectedImages.flatMap((image, index) => [
+       { id: index * 2, name: image },
+       { id: index * 2 + 1, name: image },
+     ]);
+
+     for (let i = cards.length - 1; i > 0; i--) {
+       const j = Math.floor(Math.random() * (i + 1));
+       [cards[i], cards[j]] = [cards[j], cards[i]];
+     }
+
+     return cards;
+   };
+   ```
+
 ---
 
 ## 8. Testing and Error Handling
@@ -144,6 +220,7 @@ Here is documented the basic structure and main functionalities of my project: M
 ---
 
 ## 9. User Interface and Interaction
+
 - **Design**:
   - Retro-styled UI using NES.css for a pixelated, nostalgic look.
   - Custom CSS for additional styling and responsive design.
