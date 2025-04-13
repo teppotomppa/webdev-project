@@ -283,3 +283,33 @@ button:active {
   transform: scale(0.98);
   box-shadow: none;
 }
+
+/* For small screens (mobile devices) */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 100px);
+    grid-template-rows: repeat(2, 100px);
+    max-width: 90vw;
+  }
+
+  .card {
+    width: 100px;
+    height: 100px;
+    font-size: 1.5rem;
+  }
+
+  .instructions-box {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
+
+  .win-message {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 10px 15px;
+  }
+}
