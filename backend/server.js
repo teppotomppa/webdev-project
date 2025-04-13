@@ -1,8 +1,14 @@
 const express = require("express");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose(); // Import SQLite3
-
+const cors = require("cors");
 const app = express();
+
+app.use(
+  cors({
+    origin: "https://salmon-field-07c1a5f03.6.azurestaticapps.net",
+  })
+);
 
 // Middleware to parse incoming JSON requests
 app.use(express.json()); // This is important for parsing JSON in POST requests
@@ -99,7 +105,9 @@ app.get("/highscores", (req, res) => {
     (err, rows) => {
       if (err) {
         console.error("Error retrieving highscores:", err);
-        return res.status(500).json({ message: "Error retrieving highscores." });
+        return res
+          .status(500)
+          .json({ message: "Error retrieving highscores." });
       }
       res.status(200).json(rows);
     }
