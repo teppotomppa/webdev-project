@@ -101,7 +101,10 @@ export default function App() {
     setIsWin(true);
     setIsTimerRunning(false); // Stop timer
     setEffectClass("win-effect");
-    generateBalloons();
+
+    // Generate balloons and update the state
+    const generatedBalloons = generateBalloons();
+    setBalloons(generatedBalloons);
 
     victorySound.currentTime = 0; // Reset the sound to the beginning
     victorySound.play();
