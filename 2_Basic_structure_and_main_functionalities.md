@@ -1,6 +1,3 @@
-
----
-
 # Project Phase 2 - Basic Structure and Main Functionalities
 
 Here is documented the basic structure and main functionalities of my project: Memory Game.
@@ -8,10 +5,11 @@ Here is documented the basic structure and main functionalities of my project: M
 ---
 
 ## 1. Environment
+
 - **Frontend**: Built with React, styled using NES.css and custom CSS for a retro look.
 - **Backend**: Node.js with Express for API endpoints.
 - **Database**: SQLite for storing highscores.
-- **Deployment**: 
+- **Deployment**:
   - Frontend hosted on Azure Static Web Apps.
   - Backend hosted on Azure App Service.
   - SQLite database stored on the backend.
@@ -19,6 +17,7 @@ Here is documented the basic structure and main functionalities of my project: M
 ---
 
 ## 2. Backend
+
 - **Technologies**: Node.js, Express, SQLite.
 - **Endpoints**:
   - `/submit-score`: Accepts POST requests to save highscores.
@@ -29,6 +28,7 @@ Here is documented the basic structure and main functionalities of my project: M
 ---
 
 ## 3. Frontend
+
 - **Technologies**: React, NES.css, custom CSS.
 - **Features**:
   - Dynamic grid layout based on difficulty.
@@ -37,11 +37,12 @@ Here is documented the basic structure and main functionalities of my project: M
 - **Components**:
   - `App.js`: Main component managing game state and rendering the UI.
   - `Highscores.js`: Displays and submits highscores.
-  - Utility functions for card generation and game logic.
+  - Utility functions for card generation, game logic, and sound effects.
 
 ---
 
 ## 4. Database
+
 - **Technology**: SQLite.
 - **Structure**:
   - Tables for each difficulty (`scores_easy`, `scores_medium`, `scores_hard`).
@@ -52,6 +53,7 @@ Here is documented the basic structure and main functionalities of my project: M
 ---
 
 ## 5. Basic Structure and Architecture
+
 - **Frontend**:
   - Organized into `src` folder with components, utilities, and styles.
   - Public assets (e.g., images, sounds) stored in `public` and `build` directories.
@@ -64,6 +66,7 @@ Here is documented the basic structure and main functionalities of my project: M
 ---
 
 ## 6. Functionalities
+
 - **Game Logic**:
   - Card matching with win detection.
   - Timer and move counter for tracking performance.
@@ -78,6 +81,7 @@ Here is documented the basic structure and main functionalities of my project: M
 ---
 
 ## 7. Code Quality and Documentation
+
 - **Code Quality**:
   - Modular structure with reusable components and utilities.
   - Clear separation of concerns between frontend and backend.
@@ -86,177 +90,70 @@ Here is documented the basic structure and main functionalities of my project: M
   - README file with setup and deployment instructions.
 
 ### Example Key Functions:
+
 #### Frontend:
+
 1. **Card Matching Logic**:
-   - This function checks if two cards are a match. It is a core part of the game logic.
+
+   - This function handles the logic for flipping cards and checking for matches.
+
    ```javascript
-   // filepath: src/utils/gameLogic.js
-   export function checkMatch(card1, card2) {
-       return card1.id === card2.id;
-   }
-   ```
+   // filepath: src/utils/handleCardClick.js
+   export const handleCardClick = ({
+     index,
+     flipped,
+     matched,
+     cards,
+     setFlipped,
+     setMatched,
+     setTurns,
+     cardFlipSound,
+     pendingCards,
+     setPendingCards,
+     timerRef,
+   }) => {
+     if (flipped.includes(index) || matched.includes(index)) return;
 
-2. **Timer Functionality**:
-   - This component tracks the game duration in real-time. It starts when the game begins and stops when the game ends.
-   ```javascript
-   // filepath: src/components/Timer.js
-   import { useState, useEffect } from 'react';
-
-   export default function Timer({ isRunning }) {
-       const [time, setTime] = useState(0);
-
-       useEffect(() => {
-           let timer;
-           if (isRunning) {
-               timer = setInterval(() => setTime((prev) => prev + 1), 1000);
-           } else {
-               clearInterval(timer);
-           }
-           return () => clearInterval(timer);
-       }, [isRunning]);
-
-       return <div>Time: {time}s</div>;
-   }
-   ```
-
-3. **Highscore Submission**:
-   - This function sends the player's score to the backend for storage in the database.
-   ```javascript
-   // filepath: src/utils/api.js
-   export async function submitHighscore(username, moves, time, difficulty) {
-       const response = await fetch('/submit-score', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ username, moves, time, difficulty }),
-       });
-       return response.json();
-   }
-   ```
-
-#### Backend:
-1. **Submit Highscore Endpoint**:
-   - This endpoint receives the player's score and saves it to the database. It also validates the input.
-   ```javascript
-   // filepath: server.js
-   app.post('/submit-score', async (req, res) => {
-       const { username, moves, time, difficulty } = req.body;
-       if (!username || !moves || !time || !difficulty) {
-           return res.status(400).json({ error: 'Invalid input' });
+     if (flipped.length === 2 && !pendingCards.includes(index)) {
+       if (timerRef.current) {
+         clearTimeout(timerRef.current);
        }
-       try {
-           const table = `scores_${difficulty}`;
-           await db.run(
-               `INSERT INTO ${table} (username, moves, time, timestamp) VALUES (?, ?, ?, ?)`,
-               [username, moves, time, Date.now()]
-           );
-           res.status(200).json({ message: 'Score submitted successfully' });
-       } catch (error) {
-           res.status(500).json({ error: 'Database error' });
-       }
-   });
-   ```
+       setFlipped((prevFlipped) =>
+         prevFlipped.filter((i) => matched.includes(i))
+       );
+       setPendingCards([]);
+     }
 
-2. **Retrieve Highscores Endpoint**:
-   - This endpoint fetches the top scores for a given difficulty level from the database and returns them to the frontend.
-   ```javascript
-   app.get('/highscores', async (req, res) => {
-       const { difficulty } = req.query;
-       if (!difficulty) {
-           return res.status(400).json({ error: 'Difficulty level is required' });
-       }
-       try {
-           const table = `scores_${difficulty}`;
-           const scores = await db.all(`SELECT * FROM ${table} ORDER BY moves, time LIMIT 10`);
-           res.status(200).json(scores);
-       } catch (error) {
-           res.status(500).json({ error: 'Database error' });
-       }
-   });
-   ```
-
-3. **Database Initialization**:
-   - This function creates the database tables if they do not already exist. It ensures the database is ready for use.
-   ```javascript
-   // filepath: server.js
-   async function initializeDatabase() {
-       await db.run(`
-           CREATE TABLE IF NOT EXISTS scores_easy (
-               id INTEGER PRIMARY KEY,
-               username TEXT,
-               moves INTEGER,
-               time INTEGER,
-               timestamp INTEGER
-           )
-       `);
-       await db.run(`
-           CREATE TABLE IF NOT EXISTS scores_medium (
-               id INTEGER PRIMARY KEY,
-               username TEXT,
-               moves INTEGER,
-               time INTEGER,
-               timestamp INTEGER
-           )
-       `);
-       await db.run(`
-           CREATE TABLE IF NOT EXISTS scores_hard (
-               id INTEGER PRIMARY KEY,
-               username TEXT,
-               moves INTEGER,
-               time INTEGER,
-               timestamp INTEGER
-           )
-       `);
-   }
-   initializeDatabase();
+     setFlipped((prevFlipped) => [...prevFlipped, index]);
+     cardFlipSound.currentTime = 0;
+     cardFlipSound.play();
+   };
    ```
 
 ---
 
 ## 8. Testing and Error Handling
+
 - **Testing**:
   - Manual testing for game logic, API endpoints, and UI responsiveness.
   - Edge cases tested (e.g., invalid inputs, empty highscores).
 - **Error Handling**:
   - Backend: Validates inputs and handles database errors.
   - Frontend: Displays error messages for failed API requests.
-```
 
-# Project phase 2 - Basic structure and main functionalities
+---
 
-Add something
-
-## 1. Environment
-
-Add something
-
-## 2. Backend
-
-Add something
-
-## 3. Frontend
-
-Add something
-
-## 4. Database
-
-Add something
-
-## 5. Basic structure and architecture
-
-Add something
-
-## 6. Functionalities
-
-Add something
-
-## 7. Code quality and documentation
-
-Add something
-
-## 8. Testing and error handling
-
-Add something
-
-## 9. User interface and interaction
-
-Add something
+## 9. User Interface and Interaction
+- **Design**:
+  - Retro-styled UI using NES.css for a pixelated, nostalgic look.
+  - Custom CSS for additional styling and responsive design.
+- **Interaction**:
+  - Smooth animations for card flips and victory celebrations.
+  - Sound effects for user actions (e.g., card flips, button clicks).
+  - Visual feedback for matched cards and game completion.
+- **Accessibility**:
+  - Keyboard navigation support for flipping cards and interacting with buttons.
+  - Screen reader-friendly labels for cards and buttons.
+- **Responsive Design**:
+  - Optimized for both desktop and mobile devices.
+  - Dynamic grid layout adjusts based on screen size and difficulty level.
