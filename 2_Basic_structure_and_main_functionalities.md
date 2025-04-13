@@ -208,6 +208,62 @@ Here is documented the basic structure and main functionalities of my project: M
 
 ---
 
+### Example Backend Function:
+
+**SQLite Database Initialization**
+
+- This function sets up the SQLite database connection and ensures that tables for different difficulty levels (`easy`, `medium`, `hard`) are created if they do not already exist.
+
+```javascript
+// Set up SQLite database connection
+const db = new sqlite3.Database("./scores.db", (err) => {
+  if (err) {
+    console.error("Error opening database", err);
+  } else {
+    console.log("SQLite database connected.");
+
+    db.serialize(() => {
+      // Create table for Easy difficulty
+      db.run(
+        `CREATE TABLE IF NOT EXISTS scores_easy (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL,
+          moves INTEGER NOT NULL,
+          time INTEGER NOT NULL,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`
+      );
+
+      // Create table for Medium difficulty
+      db.run(
+        `CREATE TABLE IF NOT EXISTS scores_medium (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL,
+          moves INTEGER NOT NULL,
+          time INTEGER NOT NULL,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`
+      );
+
+      // Create table for Hard difficulty
+      db.run(
+        `CREATE TABLE IF NOT EXISTS scores_hard (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL,
+          moves INTEGER NOT NULL,
+          time INTEGER NOT NULL,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`
+      );
+
+      console.log("All difficulty tables ensured.");
+    });
+  }
+});
+```
+
+---
+
 ## 8. Testing and Error Handling
 
 - **Testing**:
