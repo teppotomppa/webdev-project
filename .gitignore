@@ -7,9 +7,6 @@ node_modules/
 # Ignore .env files (for sensitive information)
 .env
 
-# Ignore build directories
-build/
-
 # Ignore IDE-specific files (VS Code, for example)
 .vscode/
 

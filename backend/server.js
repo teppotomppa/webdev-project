@@ -110,7 +110,7 @@ app.get("/highscores", (req, res) => {
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
 
 // Catch-all route for frontend
-app.get("/*splat", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
 });
 
