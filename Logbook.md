@@ -8,3 +8,4 @@
 | 07.04.2025 | 4 | Updating my project structures | Added backend (node express), database (SQLite), registration and login pages, registration page also adds username, email and password to the database. |
 | 09.04.2025 | 4 | Working on the project | Adjusting things, optimizing, cleaning up the code. |
 | 10.04.2025 | 6 | Finalized the project functionalities | Added sounds, retro-styling and more. Should be entirely done now! |
+| 13.04.2025 | 7 | Adjusting some bugs. | Fixed some bugs and uploaded the app to Azure. |
