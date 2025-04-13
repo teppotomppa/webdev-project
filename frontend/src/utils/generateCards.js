@@ -20,11 +20,8 @@ export const generateCards = (pairs) => {
     "/images/cards/image18.png",
   ];
 
-  // Shuffle the baseImages array
-  const shuffledImages = baseImages.sort(() => Math.random() - 0.5);
-
   // Select the required number of pairs
-  const selectedImages = shuffledImages.slice(0, pairs);
+  const selectedImages = baseImages.slice(0, pairs);
 
   // Create card pairs
   const cards = selectedImages.flatMap((image, index) => [
@@ -32,6 +29,11 @@ export const generateCards = (pairs) => {
     { id: index * 2 + 1, name: image },
   ]);
 
-  // Shuffle the cards
-  return cards.sort(() => Math.random() - 0.5);
+  // Fisher-Yates shuffle
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+
+  return cards;
 };

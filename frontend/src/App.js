@@ -163,15 +163,18 @@ export default function App() {
   };
 
   const startNewGame = (level) => {
-    setCards(generateCards(difficultyLevels[level]));
-    setFlipped([]);
-    setMatched([]);
-    setTurns(0);
-    setIsWin(false);
-    setEffectClass("");
-    setBalloons([]);
-    setTime(0); // Reset timer
-    setIsTimerRunning(true); // Stop timer
+    setCards([]); // Clear the current cards to force a re-render
+    setTimeout(() => {
+      setCards(generateCards(difficultyLevels[level])); // Generate new cards
+      setFlipped([]);
+      setMatched([]);
+      setTurns(0);
+      setIsWin(false);
+      setEffectClass("");
+      setBalloons([]);
+      setTime(0); // Reset timer
+      setIsTimerRunning(true); // Start timer
+    }, 0); // Use a timeout to ensure React processes the state update
   };
 
   return (
