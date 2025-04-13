@@ -280,13 +280,11 @@ const db = new sqlite3.Database("./scores.db", (err) => {
 - **Design**:
   - Retro-styled UI using NES.css for a pixelated, nostalgic look.
   - Custom CSS for additional styling and responsive design.
+  ![Main Menu](MainMenu.png)
 - **Interaction**:
   - Smooth animations for card flips and victory celebrations.
   - Sound effects for user actions (e.g., card flips, button clicks).
-  - Visual feedback for matched cards and game completion.
-- **Accessibility**:
-  - Keyboard navigation support for flipping cards and interacting with buttons.
-  - Screen reader-friendly labels for cards and buttons.
+  - Visual feedback for game completion.
 - **Responsive Design**:
   - Optimized for both desktop and mobile devices.
   - Dynamic grid layout adjusts based on screen size and difficulty level.
