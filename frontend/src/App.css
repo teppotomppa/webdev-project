@@ -284,23 +284,25 @@ button:active {
   box-shadow: none;
 }
 
-/* For small screens (mobile devices) */
+/* Responsiivisuus eri laitteille */
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: repeat(2, 100px);
-    grid-template-rows: repeat(2, 100px);
-    max-width: 90vw;
+    grid-template-columns: repeat(2, 90px);
+    grid-template-rows: repeat(2, 90px);
+    max-width: 95vw;
+    padding: 10px;
   }
 
   .card {
-    width: 100px;
-    height: 100px;
-    font-size: 1.5rem;
+    width: 90px;
+    height: 90px;
+    font-size: 1.2rem;
   }
 
   .instructions-box {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     padding: 10px;
+    margin: 10px;
   }
 
   .win-message {
@@ -309,7 +311,62 @@ button:active {
   }
 
   button {
-    font-size: 0.8rem;
-    padding: 10px 15px;
+    font-size: 0.7rem;
+    padding: 10px 12px;
+    margin: 10px;
+  }
+
+  .highscores-container {
+    font-size: 0.6rem;
+    padding: 15px;
+  }
+
+  .score-form {
+    padding: 15px;
+    width: 95%;
+  }
+
+  .score-form input,
+  .score-form button {
+    font-size: 0.75rem;
+    padding: 8px;
+  }
+
+  .game-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .game-stats p {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 80px);
+    grid-template-rows: repeat(2, 80px);
+    padding: 8px;
+  }
+
+  .card {
+    width: 80px;
+    height: 80px;
+    font-size: 1rem;
+  }
+
+  .win-message {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.65rem;
+    padding: 8px 10px;
+  }
+
+  .score-form input,
+  .score-form button {
+    font-size: 0.7rem;
+    padding: 6px;
   }
 }
