@@ -1,6 +1,7 @@
 # Project Phase 2 - Basic Structure and Main Functionalities
 
-Here is documented the basic structure and main functionalities of my project: Memory Game.
+Here is documented the basic structure and main functionalities of my project: Memory Game. <br>
+Link to the game: https://salmon-field-07c1a5f03.6.azurestaticapps.net/
 
 ---
 
