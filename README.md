@@ -1,6 +1,7 @@
 # Memory Game - Final Project
 
-This repository contains the final project for the Advanced Web Development course. The project is a retro-styled **Memory Game** built with React for the frontend and Node.js with SQLite for the backend. You can check out the game [here](https://salmon-field-07c1a5f03.6.azurestaticapps.net/)
+This repository contains the final project for the Advanced Web Development course. The project is a retro-styled **Memory Game** built with React for the frontend and Node.js with SQLite for the backend.<br><br>
+You can check out the game [here](https://salmon-field-07c1a5f03.6.azurestaticapps.net/)
 
 ---
 
