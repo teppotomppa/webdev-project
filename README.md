@@ -1,75 +1,140 @@
+# Memory Game - Final Project
 
-# webdev-project
-Repository for the final project on the course: Advanced Web Development.
-=======
-# Getting Started with Create React App
+This repository contains the final project for the Advanced Web Development course. The project is a retro-styled **Memory Game** built with React for the frontend and Node.js with SQLite for the backend.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Frontend**: Built with React, styled using NES.css and custom CSS for a retro look.
+- **Backend**: Node.js with Express for API endpoints and SQLite for storing highscores.
+- **Game Features**:
+  - Multiple difficulty levels (Easy, Medium, Hard).
+  - Highscore system with persistent storage.
+  - Retro sound effects and animations.
+  - Responsive design for both desktop and mobile devices.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Follow these steps to set up and run the project locally.
 
-### `npm test`
+### Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Make sure you have the following installed on your system:
+- [Node.js](https://nodejs.org/) (v14 or later)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Clone the Repository
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clone this repository to your local machine:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+git clone https://github.com/teppotomppa/webdev-project
+cd webdev-project
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 2. Install Dependencies
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install the required dependencies for both the frontend and backend:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Frontend:
+```bash
+cd frontend
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Backend:
+```bash
+cd ../backend
+npm install
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 3. Build the Frontend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Build the React frontend for production:
 
-### Code Splitting
+```bash
+cd ../frontend
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This will create a `build/` directory containing the optimized frontend files.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 4. Start the Backend Server
 
-### Making a Progressive Web App
+Navigate to the `backend` directory and start the server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+cd ../backend
+node server.js
+```
 
-### Advanced Configuration
+The backend server will run on `http://localhost:3000` by default.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+### 5. Run the Application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Once the backend server is running, open your browser and navigate to:
 
-### `npm run build` fails to minify
+```
+http://localhost:3000
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
->>>>>>> 03d9328 (Initial commit)
+You should see the Memory Game application running locally.
+
+---
+
+## Project Structure
+
+The project is organized as follows:
+
+```
+webdev-project/
+├── frontend/       # React frontend
+│   ├── src/        # Source code for React components and utilities
+│   ├── public/     # Public assets (e.g., index.html, images)
+│   └── build/      # Production build of the frontend
+├── backend/        # Node.js backend
+│   ├── server.js   # Main server file
+│   └── scores.db   # SQLite database file
+└── README.md       # Project documentation
+```
+
+---
+
+## API Endpoints
+
+The backend provides the following API endpoints:
+
+- **POST /submit-score**: Submit a highscore.
+- **GET /highscores**: Retrieve highscores for a specific difficulty.
+
+---
+
+## Troubleshooting
+
+If you encounter any issues, try the following:
+- Ensure all dependencies are installed (`npm install`).
+- Check that the backend server is running (`node server.js`).
+- Verify that the frontend is built (`npm run build`).
+
+---
+
+## Acknowledgments
+
+- [NES.css](https://nostalgic-css.github.io/NES.css/) for the retro-styled UI.
+- [React](https://reactjs.org/) for the frontend framework.
+- [SQLite](https://www.sqlite.org/) for the lightweight database.
+- [Node.js](https://nodejs.org/) for the backend runtime environment.
+- [Express](https://expressjs.com/) for building the backend API.
