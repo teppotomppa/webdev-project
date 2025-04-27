@@ -88,7 +88,7 @@ These improvements would further enhance the user experience and expand the scop
 | 27.04.2025 | 6 | Phase 4 - Presentation | Made a presentation on the final project. |
 | **Total** | 40h | | |
 
-## Some screenshots
+# Some screenshots
 
 ### Main Menu
 ![Main Menu](https://github.com/teppotomppa/webdev-project/raw/main/mainMenu.png)
