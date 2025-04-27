@@ -87,3 +87,17 @@ These improvements would further enhance the user experience and expand the scop
 | 13.04.2025 | 8 | Adjusting some bugs. | Fixed some bugs and uploaded the app to Azure. |
 | 27.04.2025 | 6 | Phase 4 - Presentation | Made a presentation on the final project. |
 | **Total** | 40h | | |
+
+## Some screenshots
+
+### Main Menu
+![Main Menu](https://github.com/teppotomppa/webdev-project/raw/main/mainMenu.png)
+
+### Victory Screen
+![Victory Screen](https://github.com/teppotomppa/webdev-project/raw/main/victory.png)
+
+### Submit Score
+![Submit Score](https://github.com/teppotomppa/webdev-project/raw/main/submitScore.png)
+
+### Highscore Table
+![Highscore Table](https://github.com/teppotomppa/webdev-project/raw/main/highscoreTable.png)
