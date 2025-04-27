@@ -88,16 +88,16 @@ These improvements would further enhance the user experience and expand the scop
 | 27.04.2025 | 6 | Phase 4 - Presentation | Made a presentation on the final project. |
 | **Total** | 40h | | |
 
-# Some screenshots
+## Screenshots
 
 ### Main Menu
-![Main Menu](https://github.com/teppotomppa/webdev-project/raw/main/mainMenu.png)
+![Main Menu](https://github.com/teppotomppa/webdev-project/raw/main/screenshots/mainMenu.png)
 
 ### Victory Screen
-![Victory Screen](https://github.com/teppotomppa/webdev-project/raw/main/victory.png)
+![Victory Screen](https://github.com/teppotomppa/webdev-project/raw/main/screenshots/victory.png)
 
 ### Submit Score
-![Submit Score](https://github.com/teppotomppa/webdev-project/raw/main/submitScore.png)
+![Submit Score](https://github.com/teppotomppa/webdev-project/raw/main/screenshots/submitScore.png)
 
 ### Highscore Table
-![Highscore Table](https://github.com/teppotomppa/webdev-project/raw/main/highscoreTable.png)
+![Highscore Table](https://github.com/teppotomppa/webdev-project/raw/main/screenshots/highscoreTable.png)
