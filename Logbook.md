@@ -10,3 +10,4 @@
 | 10.04.2025 | 6 | Finalized the project functionalities | Added sounds, retro-styling and more. Should be entirely done now! |
 | 12.04.2025 | 3 | Adjusting the app. | Fixed some bugs and adjusted code. |
 | 13.04.2025 | 8 | Adjusting some bugs. | Fixed some bugs and uploaded the app to Azure. |
+| 27.04.2025 | 5 | Phase 4 - Presentation | Made a presentation on the final project. |
