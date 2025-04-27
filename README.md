@@ -13,7 +13,7 @@ You can check out the game [here](https://salmon-field-07c1a5f03.6.azurestaticap
   - Multiple difficulty levels (Easy, Medium, Hard).
   - Highscore system with persistent storage.
   - Retro sound effects and animations.
-  - Responsive design for both desktop and mobile devices.
+  - Responsive design for desktop.
 
 ---
 
