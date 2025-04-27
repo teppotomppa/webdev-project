@@ -1,7 +1,7 @@
 # Phase 4 – Project Presentation
 
 ## 🎯 Project Title
-**MatchMaster: Interactive Memory Card Game**
+**Memory Game - Fullstack Project for an online memory game.**
 
 ---
 
@@ -11,7 +11,7 @@ Create an engaging browser-based memory game to test and improve players' cognit
 
 **Target Users:**
 - Casual gamers
-- Parents/teachers helping children develop memory skills
+- Competitive gamers
 
 **Key Features:**
 - Card flipping animations
