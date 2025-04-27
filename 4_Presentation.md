@@ -1,61 +1,108 @@
 # Phase 4 – Project Presentation
 
-## 🎯 Project title
-
-_Give your project a descriptive and informative title._
-
----
-
-## 📝 Project overview
-
-_Briefly describe the project’s purpose, its target users, and its context._
+## 🎯 Project Title
+**MatchMaster: Interactive Memory Card Game**
 
 ---
 
-## 📌 Use case summary
+## 📝 Project Overview
+**Purpose:**
+Create an engaging browser-based memory game to test and improve players' cognitive skills.
 
-_Link to the use cases defined in Phase 1._
+**Target Users:**
+- Casual gamers
+- Parents/teachers helping children develop memory skills
 
-| Use Case | Implemented (Yes/No) | Demonstration / Notes |
-|----------|----------------------|------------------------|
-| Example: User logs in and makes a reservation | Yes | Implemented using secure session handling. Demo at 2:45 in the video. |
-| Example: Admin deletes resources | No | Not prioritized, possible future work. |
+**Key Features:**
+- Card flipping animations
+- Move counter & timer
+- Win condition detection
+- Responsive grid layout
+- Restart functionality
 
-_Add explanations for each use case, including demo timestamps if using video._
-
----
-
-## ✍️ Technical implementation
-
-_Describe technologies used, architectural decisions, and how key features were implemented._
-
----
-
-## 🚂 Development process
-
-_Summarize your progress from start to finish, mentioning key decisions or changes along the way._
+**Platform:**
+React web application with CSS animations.
 
 ---
 
-## ☀️ Reflection and future work
+## 📌 Use Case Summary
 
-_What worked well? What challenges did you face? What would you add or improve in the future?_
+| Use Case                | Implemented (Yes/No) | Demonstration / Notes                                      |
+|-------------------------|----------------------|------------------------------------------------------------|
+| User matches card pairs | Yes                  | Core gameplay logic – Game.js                              |
+| Track moves & time      | Yes                  | State management in App.js                                  |
+| Reset game              | Yes                  | Button component with state reset                           |
+| Difficulty levels       | No                   | Future expansion possibility                                |
+
+---
+
+## ✍️ Technical Implementation
+**Tech Stack:**
+- Frontend: React, CSS Grid, CSS Animations
+- State Management: React useState/useEffect
+- Deployment: GitHub Pages
+
+**Key Technical Features:**
+1. Card Grid System:
+   // Dynamic card generation
+   const [cards, setCards] = useState(shuffle([...cardValues, ...cardValues]));
+
+2. Match Detection Logic:
+   // In Game component
+   useEffect(() => {
+     if (openedCards.length === 2) checkMatch();
+   }, [openedCards]);
+
+3. Animations:
+   CSS transform/transition for smooth card flips
+
+---
+
+## 🚂 Development Process
+1. Setup (Week 1):
+   - Create React App scaffolding
+   - Design card component structure
+
+2. Core Gameplay (Week 2):
+   - Implement card matching logic
+   - Add move counter & timer
+
+3. Polish (Week 3):
+   - Create card flip animations
+   - Implement restart functionality
+   - Add responsive styling
+
+---
+
+## ☀️ Reflection and Future Work
+**Successes ✅**
+- Smooth card animations
+- Effective state management
+- Clean UI/UX
+
+**Challenges ❗**
+- Managing asynchronous card flip states
+- Preventing double-click errors
+
+**Future Improvements ➕**
+1. Multiple difficulty levels (4x4, 6x6 grids)
+2. Score tracking system
+3. Themed card sets
+4. Sound effects
 
 ---
 
 ## 📊 Work Hours Log
 
-_You can copy from the logbook here._
-
 | Date       | Time | Task                                |
 |------------|------|-------------------------------------|
-| 2.4.2025   | 3h   | Defined use cases                   |
-| 4.4.2025   | 2h   | Built login form                    |
-| ...        | ...  | ...                                 |
-| **Total**  | **63h** |                                 |
+| 01.05.2024 | 4h   | Base card component development     |
+| 05.05.2024 | 5h   | Matching logic implementation       |
+| 10.05.2024 | 3h   | Animation system                    |
+| **Total**  | **32h** |                                     |
 
 ---
 
-## 🪢 Presentation link
-
-_Add a link to your video presentation or state that it was presented live._
+## 🪢 Presentation Links
+**Live Demo:** https://teppotomppa.github.io/webdev-project/
+**GitHub Repo:** https://github.com/teppotomppa/webdev-project
